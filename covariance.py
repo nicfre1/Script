@@ -8,27 +8,16 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 def build_arg_parser():
     p = argparse.ArgumentParser(
         description="Compute individual and group covariance matrices from thickness TSV files."
     )
-
-    p.add_argument(
-        "--input-dir",
-        type=Path,
-        required=True,
-        help="Directory containing thickness TSV files.",
-    )
-
-    p.add_argument(
-        "--output-dir",
-        type=Path,
-        required=True,
-        help="Directory where covariance matrices will be saved.",
-    )
-
+    p.add_argument("in_rh_stats",
+                   help="fdfdssd")
+    p.add_argument("in_lh_stats",
+                   help="fkndsfdskl")
     return p
+
 
 
 def clean_subject_id(sample):
