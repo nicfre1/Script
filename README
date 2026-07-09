@@ -22,3 +22,21 @@ matrix = np.exp(-(diff ** 2))
 5. Stores all individual matrices in a single df_3d Dataframe
 6. Computes a group matrix by averaging individual matrices across subjects
 
+Usage exemple
+
+
+
+Run the script by providing the left and right hemisphere thickness files and an output directory.
+
+```bash
+
+python compute_covariance.py \
+
+    path/to/lh_thickness.tsv \
+
+    path/to/rh_thickness.tsv \
+
+    --out_dir path/to/output
+
+```
+
