@@ -14,6 +14,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.stats import zscore
+from brainspace.gradient import GradientMaps
+
 
 def _build_arg_parser():
     p = argparse.ArgumentParser(
@@ -81,6 +83,56 @@ def main():
         group_matrix = group_matrix.loc[numeric_cols,  numeric_cols]
         
         print(group_matrix)
+
+        print("Compute cortical Gradients")
+        gradient_model = GradientMaps(n_components=10,approach="dm",kernel="normalized_angle",random_state=0)
+
+        gradient_model.fit(group_matrix.to_numpy(dtype=float))
+        gradients = pd.DataFrame(
+            gradient_model.gradients_,
+            index=group_matrix.index,
+            columns=[f"gradient_{i + 1}" for i in range(gradient_model.gradients_.shape[1])])
+
+        lambdas = pd.DataFrame(
+            gradient_model.lambdas_,
+            index=[f"gradient_{i + 1}" for i in range(len(gradient_model.lambdas_))],
+            columns=["lambda"])
+
+        print("Cortical Gradients")
+        print(gradients)
+
+        print("Eigenvalues")
+        print(lambdas)
+
+
+        print("Compute individual cortical gradients")
+
+        subjects = toto["sample"].tolist()
+
+        individual_covariances = [
+            df_3d.loc[subject].to_numpy(dtype=float)
+            for subject in subjects]
+
+        gm_indiv = GradientMaps(n_components=10,approach="dm",kernel="normalized_angle",random_state=0,alignment="procrustes")
+
+        gm_indiv.fit(individual_covariances,reference=gradient_model.gradients_)
+
+        individual_gradients = pd.concat({subject: pd.DataFrame(aligned_gradients,index=numeric_cols,columns=[f"gradient_{i + 1}"for i in range(aligned_gradients.shape[1])])
+                for subject, aligned_gradients
+                in zip(subjects, gm_indiv.aligned_)},names=["subjects", "region"])
+
+        individual_lambdas = pd.DataFrame(gm_indiv.lambdas_,index=subjects,columns=[f"lambda_{i + 1}"
+                for i in range(len(gm_indiv.lambdas_[0]))])
+
+        individual_lambdas.index.name = "subjects"
+
+        print("Individual Cortical Gradients")
+        print(individual_gradients)
+
+        print("Individual Eigenvalues")
+        print(individual_lambdas)
+
+
 
 
 if __name__ == "__main__":

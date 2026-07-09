@@ -1,1 +1,24 @@
 Tested with python 3.11 check requirements.txt
+
+This repository contains a Python script to compute individual and group covariance matrices from cortical thickness TSV files
+
+The script is designed for left and right hemisphere thickness files such as:
+
+BrainnetomeChild_thickness_lh_stats.tsv
+BrainnetomeChild_thickness_rh_stats.tsv
+
+
+What does the Script do
+
+For each input TSV file, the script:
+
+1. Reads the TSV file
+2. selects the sample column and all columns containing thickness;
+3. Computes a z-score across regions for each subject
+4. Computes one individual region-by-region matrix per subject using:
+diff = z[:, None] - z[None, :]
+matrix = np.exp(-(diff ** 2))
+
+5. Stores all individual matrices in a single df_3d Dataframe
+6. Computes a group matrix by averaging individual matrices across subjects
+
