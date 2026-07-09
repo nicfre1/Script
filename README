@@ -8,23 +8,35 @@ BrainnetomeChild_thickness_lh_stats.tsv
 BrainnetomeChild_thickness_rh_stats.tsv
 
 
-What does the Script do
+What does the Script do?
 
-For each input TSV file, the script:
+For the input left and right hemisphere thickness TSV files, the script:
 
-1. Reads the TSV file
-2. selects the sample column and all columns containing thickness;
-3. Computes a z-score across regions for each subject
-4. Computes one individual region-by-region matrix per subject using:
+1. Reads the left and right hemisphere TSV files.
+2. Selects the sample column and all columns containing cortical thickness values.
+3. Merges the left and right hemisphere data into a single DataFrame.
+4. Computes a z-score across cortical regions for each subject.
+5. Averages homologous left and right hemisphere regions into a single regional value.
+6. Computes one individual region-by-region covariance matrix per subject using:
+
 diff = z[:, None] - z[None, :]
 matrix = np.exp(-(diff ** 2))
 
-5. Stores all individual matrices in a single df_3d Dataframe
-6. Computes a group matrix by averaging individual matrices across subjects
+7. Stores all individual covariance matrices in a single DataFrame.
+8. Computes a group covariance matrix by averaging the individual covariance matrices across subjects.
+9. Computes group cortical gradients from the group covariance matrix using BrainSpace diffusion map embedding.
+10. Extracts the corresponding group eigenvalues (lambdas), representing the variance explained by each gradient.
+11. Computes individual cortical gradients for each subject and aligns them to the group gradients using Procrustes alignment.
+12. Computes the corresponding individual eigenvalues (lambdas).
+13. Saves the following output files:
+    * Individual covariance matrices
+    * Group covariance matrix
+    * Group cortical gradients
+    * Group eigenvalues (lambdas)
+    * Individual cortical gradients
+    * Individual eigenvalues (lambdas)
 
-Usage exemple
-
-
+Usage example
 
 Run the script by providing the left and right hemisphere thickness files and an output directory.
 
