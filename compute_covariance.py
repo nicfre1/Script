@@ -63,10 +63,12 @@ def main():
     i_right = i_stats[1]
 
     logging.info("Read TSV files")
+    # Read left and right hemisphere thickness file
     df_left = pd.read_csv(i_left, sep="\t")
     df_right = pd.read_csv(i_right, sep="\t")
 
     logging.info("Filter out column not thickness")
+    # Keep subject # and cortical thickness
     left = df_left.loc[
         :,
         df_left.columns.str.contains("thickness") | df_left.columns.str.match("sample"),
@@ -79,8 +81,10 @@ def main():
     ]
 
     thickness_df = pd.merge(left, right, on="sample")
+    # Merge left and right hemisphere thickness values
 
     logging.debug("Compute zscore")
+    # Zscore for each subject
     df_zscore = thickness_df.copy()
     numeric_cols = thickness_df.columns[thickness_df.columns != "sample"]
 
@@ -91,6 +95,7 @@ def main():
     )
 
     logging.debug("Average left and right zscores")
+    # Average zscore for left and right cortical regions
     zscore_regions = df_zscore[numeric_cols].copy()
 
     zscore_regions.columns = (
@@ -110,6 +115,7 @@ def main():
     numeric_cols = zscore_regions.columns
 
     logging.debug("Create empty object to store covariance matrices")
+    # Compute one covariance matrix for each subject
     index_multi = pd.MultiIndex.from_product(
         [thickness_df["sample"], numeric_cols],
         names=["subjects", "covariance"],
@@ -132,12 +138,14 @@ def main():
     # print(df_3d)
 
     logging.debug("Group Matrix")
+    # Average all individual covariance matrices into group matrices
     group_matrix = df_3d.groupby(level="covariance").mean()
     group_matrix = group_matrix.loc[numeric_cols, numeric_cols]
 
     # print(group_matrix)
 
     logging.debug("Compute cortical Gradients")
+    # Compute cortical gradients from the group covariance
     gradient_model = GradientMaps(
         n_components=10,
         approach="dm",
@@ -168,6 +176,7 @@ def main():
     # print(lambdas)
 
     logging.debug("Compute individual cortical gradients")
+    # Align individual gradients to the group
 
     subjects = thickness_df["sample"].tolist()
 
@@ -214,6 +223,7 @@ def main():
     # print(individual_lambdas)
 
     logging.info("Save CSV files")
+    # Save all outputs to CSV files
 
     output_prefix = "lh_rh_average"
 
