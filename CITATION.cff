@@ -6,6 +6,7 @@ authors:
   - family-names: "Nicolas"
     given-names: "Frederic"
     affiliation: "Universite de Sherbrooke"
+    orcid: "https://orcid.org/0009-0003-5950-7287"
 repository-code: "https://github.com/nicfre1/structural-connectivity-module"
 orcid #https://orcid.org/0009-0003-5950-7287
 license: MIT
