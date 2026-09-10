@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+"If you use this software, please cite it as below.
+title: "Structural connectivity module: MCRIBS cortical thickness covariance and gradients"
+type: software
+authors:
+  - family-names: Nicolas
+    given-names: Frédéric
+    affiliation: "Université de Sherbrooke"
+    # orcid: "https://orcid.org/0009-0003-5950-7287"
+repository-code: "https://github.com/nicfre1/structural-connectivity-module"
+url: "https://github.com/nicfre1/structural-connectivity-module"
+abstract: >-
+  Python tools to compute individual and group structural covariance matrices
+  and diffusion-map cortical gradients from cortical thickness, including a
+  DrawEM32 to MCRIBS (M-CRIB-S) Desikan-Killiany converter for dHCP neonatal data.
+keywords:
+  - MCRIBS
+  - M-CRIB-S
+  - DrawEM
+  - dHCP
+  - cortical thickness
+  - structural covariance
+  - cortical gradients
+  - BrainSpace
+  - neonatal neuroimaging
+license: MIT
+version: "1.0.0"
+date-released: "2026-09-10"
