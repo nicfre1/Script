@@ -1,0 +1,16 @@
+# Optional extra dependencies, only needed for the cortical-surface render
+# produced by plot_group_gradients_brain.py (and, transitively, the
+# group_gradients_brain.png step of compute_covariance_gradients.py).
+#
+# These pull in VTK, which is sensitive to the Python version. A dedicated
+# environment (Python 3.10, VTK 9.3.x) is recommended, e.g.:
+#   conda create -n gradients-brain python=3.10
+#   conda activate gradients-brain
+#   pip install -r requirements-brain.txt
+#
+# Everything else in extra-functions runs with ../requirements.txt alone.
+
+enigmatoolbox
+brainspace[plotting]
+nibabel
+vtk==9.3.1
