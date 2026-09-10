@@ -4,8 +4,8 @@ This repository contains a Python script to compute individual and group covaria
 
 The script is designed for left and right hemisphere thickness files such as:
 
-BrainnetomeChild_thickness_lh_stats.tsv
-BrainnetomeChild_thickness_rh_stats.tsv
+thickness_68_lh_stats.tsv
+thickness_68_rh_stats.tsv
 
 
 What does the Script do?
@@ -35,6 +35,8 @@ matrix = np.exp(-(diff ** 2))
     * Group eigenvalues (lambdas)
     * Individual cortical gradients
     * Individual eigenvalues (lambdas)
+
+14. Generates visualization figures for the group covariance matrix, cortical gradients, and eigenvalues (lambdas) to facilitate interpretation of the results.
 
 Usage example
 
